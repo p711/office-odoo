@@ -1,2 +1,2 @@
-sudo ALL=(ALL) NOPASSWD:ALL
+odoo ALL=(ALL) NOPASSWD:ALL
 
