@@ -1,0 +1,21 @@
+--- /usr/lib/python2.7/dist-packages/odoo/addons/auth_oauth/controllers/main.py-orig    2016-12-04 07:54:25.469995024 +0000
++++ /usr/lib/python2.7/dist-packages/odoo/addons/auth_oauth/controllers/main.py    2016-12-04 08:22:55.712403078 +0000
+@@ -56,7 +56,7 @@
+         except Exception:
+             providers = []
+         for provider in providers:
+-            return_url = request.httprequest.url_root + 'auth_oauth/signin'
++            return_url = self.env['ir.config_parameter'].get_param('web.base.url') + '/auth_oauth/signin'
+             state = self.get_state(provider)
+             params = dict(
+                 response_type='token',
+@@ -71,7 +71,7 @@
+     def get_state(self, provider):
+         redirect = request.params.get('redirect') or 'web'
+         if not redirect.startswith(('//', 'http://', 'https://')):
+-            redirect = '%s%s' % (request.httprequest.url_root, redirect[1:] if redirect[0] == '/' else redirect)
++            redirect = '%s/%s' % (self.env['ir.config_parameter'].get_param('web.base.url'), redirect[1:] if redirect[0] == '/' else redirect)
+         state = dict(
+             d=request.session.db,
+             p=provider['id'],
+

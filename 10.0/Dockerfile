@@ -9,6 +9,7 @@ RUN set -x; \
             curl \
             vim \
             sudo \
+            patch \
             node-less \
             python-gevent \
             python-pip \
@@ -33,6 +34,9 @@ RUN set -x; \
         && apt-get update \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
+
+COPY patches/* /patches/
+RUN  for i in patches/*; do patch -p0 < $i; done
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
