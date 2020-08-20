@@ -50,6 +50,11 @@ EXPOSE 8069 8071
 # Set the default config file
 ENV OPENERP_SERVER /etc/odoo/openerp-server.conf
 
+# utiliies
+RUN apt-get update \
+ && apt-get -y install telnet tcpdump net-tools \
+ && rm -rf /var/lib/apt/lists/*
+
 # Set default user when running the container
 USER odoo
 
