@@ -7,6 +7,7 @@ RUN set -x; \
         && apt-get install -y --no-install-recommends \
             ca-certificates \
             curl \
+            wget \
             node-less \
             node-clean-css \
             python-gevent \
@@ -60,3 +61,4 @@ USER odoo
 
 ENTRYPOINT ["/entrypoint.sh"]
 CMD ["openerp-server"]
+
