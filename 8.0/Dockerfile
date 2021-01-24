@@ -1,6 +1,8 @@
 FROM debian:jessie
 MAINTAINER Odoo S.A. <info@odoo.com>
 
+COPY ./wkhtmltox-0.12.1.2_linux-jessie-amd64.deb  wkhtmltox.deb
+
 # Install some deps, lessc and less-plugin-clean-css, and wkhtmltopdf
 RUN set -x; \
         apt-get update \
@@ -8,6 +10,7 @@ RUN set -x; \
             ca-certificates \
             curl \
             wget \
+            patch \
             node-less \
             node-clean-css \
             python-gevent \
@@ -15,7 +18,7 @@ RUN set -x; \
             python-pyinotify \
             python-renderpm \
             python-support \
-        && curl -o wkhtmltox.deb -SL http://nightly.odoo.com/extra/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
+#        && curl -o wkhtmltox.deb -SL http://nightly.odoo.com/extra/wkhtmltox-0.12.1.2_linux-jessie-amd64.deb \
         && echo '40e8b906de658a2221b15e4e8cd82565a47d7ee8 wkhtmltox.deb' | sha1sum -c - \
         && dpkg --force-depends -i wkhtmltox.deb \
         && apt-get -y install -f --no-install-recommends \
@@ -33,6 +36,9 @@ RUN set -x; \
         && apt-get update \
         && apt-get -y install -f --no-install-recommends \
         && rm -rf /var/lib/apt/lists/* odoo.deb
+
+COPY ./ir_sequence.py.patch /tmp
+RUN cd /; patch -p0 < /tmp/ir_sequence.py.patch
 
 # Copy entrypoint script and Odoo configuration file
 COPY ./entrypoint.sh /
